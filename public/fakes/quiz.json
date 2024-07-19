@@ -1,0 +1,32 @@
+ {
+  "id": 1,
+  "title": "Quiz 1",
+  "description": "Descritivo do quiz",
+  "imageSrc": "http://localhost:3000/images/quiz1.jpg",
+  "questions": [
+    {
+      "id": 1,
+      "text": "Quem é este personagem ?",
+      "image": "http://localhost:3000/images/itachi.jpg",
+      "responses": [
+        {
+          "id": 1,
+          "text": "Simplesmente o personagem mais mau"
+        },
+        {
+          "id": 2,
+          "text": "Opção dois"
+        },
+        {
+          "id": 3,
+          "text": "Opção três"
+        },
+        {
+          "id": 4,
+          "text": "Opção quatro"
+        }
+      ],
+      "correctResponses": "1:3"
+    }
+  ]
+}
