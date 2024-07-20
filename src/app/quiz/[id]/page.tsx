@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 export default function QuizPage() {
   const [quiz, setQuiz] = useState<Quiz>()
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null)
-  const [selectedResponses, setSelectedResponses] = useState<string>()
+  const [selectedResponses, setSelectedResponses] = useState<string>('')
 
   const {id} = useParams()
   const quizId = Number(id)
@@ -38,7 +38,7 @@ export default function QuizPage() {
       setCurrentQuestion(questions[currentIndex + 1])
 
     setSelectedResponses('')
-
+    isResponseCorrect()
    }
 
    function getCurrentQuestionIndex(): number {
@@ -50,9 +50,9 @@ export default function QuizPage() {
   function addResponse(id: number) {
     const responseId = id.toString()
     
-    if(selectedResponses?.includes(responseId)) return
-
-    setSelectedResponses(`${selectedResponses}:${id}`)
+    if(selectedResponses.includes(responseId)) return
+    
+    setSelectedResponses(selectedResponses.length? `${selectedResponses}:${id}`: `${id}`)
   }
 
   function removeResponse(id: number) {
@@ -69,6 +69,18 @@ export default function QuizPage() {
     !selectedResponses?.includes(responseId) ? addResponse(id) : removeResponse(id) 
   }
 
+  function isResponseCorrect(): boolean {
+    if(!selectedResponses) return false
+
+    const correctResponsesSort = currentQuestion?.correctResponses.split(':').sort().join(':')
+    const selectedResponsesSort = selectedResponses.split(':').sort().join(':') 
+
+    console.log({correctResponsesSort, selectedResponsesSort})
+    console.log(correctResponsesSort === selectedResponsesSort)
+
+    return correctResponsesSort === selectedResponsesSort
+  }
+  
   return (
     <Container>
       <main className="px-16 py-8">
@@ -93,7 +105,7 @@ export default function QuizPage() {
                       key={i} 
                       text={_.text} 
                       isActive={selectedResponses?.includes(_.id.toString())}
-                      onClick={() => handleSelectResponse(_.id)}   
+                      onClick={() => handleSelectResponse(_.id)}  
                     /> 
                   ))}
                 </div>
