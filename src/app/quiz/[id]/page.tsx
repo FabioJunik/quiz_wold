@@ -46,8 +46,7 @@ export default function QuizPage() {
         setCurrentQuestion(questions[currentIndex + 1])
         setSelectedResponses([])
       }, 1000)
-    }
-    
+    }    
    }
 
    function getCurrentQuestionIndex(): number {

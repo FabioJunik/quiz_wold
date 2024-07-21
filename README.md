@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# QuizWorld
 
-## Getting Started
+## Resumo
 
-First, run the development server:
+QuizWorld é uma plataforma interativa que permite a criação e compartilhamento de questionários personalizados. Ideal para educadores, estudantes, empresas e entusiastas de quizzes, o QuizWorld oferece uma maneira fácil e divertida de testar conhecimentos e aprender novas matérias.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Detalhes do Projeto
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Nome:** QuizWorld
+- **Objetivo:** Facilitar a criação e o compartilhamento de questionários personalizados.
+- **Público-alvo:** Educadores, estudantes, empresas e entusiastas de quizzes.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Funcionalidades Principais
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+1. **Criação de Questionários:**
 
-## Learn More
+   - Interface intuitiva para criar e editar questionários com diversas opções de perguntas (múltipla escolha, verdadeiro/falso, preenchimento de lacunas, etc.).
+   - Personalização de questionários com temas e estilos únicos.
 
-To learn more about Next.js, take a look at the following resources:
+2. **Compartilhamento e Privacidade:**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   - Opção de publicar questionários para o público ou mantê-los privados para uso pessoal ou compartilhamento seletivo.
+   - Funções de busca para encontrar e explorar quizzes públicos.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+3. **Análises e Relatórios:**
 
-## Deploy on Vercel
+   - Ferramentas de análise detalhada para criadores de questionários, incluindo estatísticas de respostas e desempenho.
+   - Dashboard do usuário com visão geral dos questionários criados e respondidos.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+4. **Social e Gamificação:**
+   - Sistema de recompensas e badges para incentivar a criação e participação em quizzes.
+   - Perfis públicos e sistema de seguidores para criar uma comunidade engajada.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Benefícios
+
+- **Aprendizado Interativo:** Ótima ferramenta para estudo e preparação para provas, permitindo que os usuários testem seus conhecimentos de maneira interativa.
+- **Engajamento Social:** Crie e compartilhe quizzes com amigos, colegas e uma comunidade mais ampla.
+- **Análise de Desempenho:** Obtenha insights valiosos sobre as respostas e o desempenho em questionários.
+
+## Conclusão
+
+QuizWorld é mais do que uma simples ferramenta de criação de quizzes; é uma plataforma para aprendizado, interação social e análise de conhecimento. Junte-se a nós nesta jornada e ajude a transformar a maneira como criamos e compartilhamos questionários!
