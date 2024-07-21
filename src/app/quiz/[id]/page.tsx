@@ -2,6 +2,7 @@
 import { Button } from "@/components/button";
 import { Container } from "@/components/container";
 import { QuizResponse } from "@/components/quizResponse";
+import { QuizResponseStyle } from "@/components/quizResponse/types";
 import { Question } from "@/model/question";
 import { Quiz } from "@/model/quiz";
 import { quizService } from "@/services/quiz-service";
@@ -9,10 +10,14 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
+interface SelectResponse {
+  id: number;
+  style: QuizResponseStyle;
+}
 export default function QuizPage() {
   const [quiz, setQuiz] = useState<Quiz>()
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null)
-  const [selectedResponses, setSelectedResponses] = useState<string>('')
+  const [selectedResponses, setSelectedResponses] = useState<SelectResponse[]>([])
 
   const {id} = useParams()
   const quizId = Number(id)
@@ -33,12 +38,16 @@ export default function QuizPage() {
     const { questions } = quiz
 
     const currentIndex = getCurrentQuestionIndex()
-
-    if(currentIndex < questions.length - 1)
-      setCurrentQuestion(questions[currentIndex + 1])
-
-    setSelectedResponses('')
-    isResponseCorrect()
+    
+    selecteWrongAndCorrectResponse()
+    console.log({selectedResponses})
+    if(currentIndex < questions.length - 1){
+      setTimeout(() => {
+        setCurrentQuestion(questions[currentIndex + 1])
+        setSelectedResponses([])
+      }, 2000)
+    }
+    
    }
 
    function getCurrentQuestionIndex(): number {
@@ -48,39 +57,51 @@ export default function QuizPage() {
    }
 
   function addResponse(id: number) {
-    const responseId = id.toString()
-    
-    if(selectedResponses.includes(responseId)) return
-    
-    setSelectedResponses(selectedResponses.length? `${selectedResponses}:${id}`: `${id}`)
+    if(isResponseSelected(id)) return
+    setSelectedResponses([...selectedResponses, { id, style: 'active' }])
   }
+
 
   function removeResponse(id: number) {
-    const responseId = id.toString()
-    
-    if(!selectedResponses?.includes(responseId)) return
-
-    setSelectedResponses(selectedResponses.replace(`:${responseId}`, ''))
+    if(!isResponseSelected(id)) return
+    setSelectedResponses(selectedResponses.filter(response => response.id !== id))
   }
   
-  function handleSelectResponse(id: number) {
-    const responseId = id.toString()
+  const isResponseSelected = (id: number) => selectedResponses.some(response => response.id === id)
 
-    !selectedResponses?.includes(responseId) ? addResponse(id) : removeResponse(id) 
+  function handleSelectResponse(id: number) {
+    !selectedResponses?.some(response => response.id === id) ? addResponse(id) : removeResponse(id) 
+  }
+
+  function selecteWrongAndCorrectResponse() {
+    const responses = selectedResponses.map(response => {
+      if(currentQuestion?.correctResponses.includes(response.id.toString())) {
+        return {...response, style: 'correct' }
+      }
+
+      return {...response, style: 'wrong' }
+    }) as SelectResponse[]
+
+    console.log({responses})
+    setSelectedResponses([...responses])
   }
 
   function isResponseCorrect(): boolean {
-    if(!selectedResponses) return false
+    if(!selectedResponses.length) return false
 
-    const correctResponsesSort = currentQuestion?.correctResponses.split(':').sort().join(':')
-    const selectedResponsesSort = selectedResponses.split(':').sort().join(':') 
+    const correctResponsesSort = sortResponses(currentQuestion?.correctResponses || '')
+    const responsesId = selectedResponses.map(_ => _.id).join(':')
+    const responsesSort = sortResponses(responsesId) 
 
-    console.log({correctResponsesSort, selectedResponsesSort})
-    console.log(correctResponsesSort === selectedResponsesSort)
+    console.log({correctResponsesSort, responsesSort})
 
-    return correctResponsesSort === selectedResponsesSort
+    return correctResponsesSort === responsesSort
   }
+
+  const sortResponses = (responses: string) =>  responses.split(':').sort().join(':')
   
+  console.log("Fora> ", {selectedResponses})
+
   return (
     <Container>
       <main className="px-16 py-8">
@@ -90,7 +111,7 @@ export default function QuizPage() {
           <div>
             <h2 className="">{currentQuestion.text}</h2>
             <div className="w-full flex gap-2 items-center">
-              <Image 
+              <Image
                 className="w-[650px] h-[400px] flex-1 rounded-lg" 
                 src={currentQuestion.image} 
                 alt="im" 
@@ -104,8 +125,9 @@ export default function QuizPage() {
                     <QuizResponse 
                       key={i} 
                       text={_.text} 
-                      isActive={selectedResponses?.includes(_.id.toString())}
-                      onClick={() => handleSelectResponse(_.id)}  
+                      //isActive={selectedResponses?.includes(_.id.toString())}
+                      onClick={() => handleSelectResponse(_.id)}
+                      style={selectedResponses.find(r => r.id === _.id)?.style}
                     /> 
                   ))}
                 </div>
