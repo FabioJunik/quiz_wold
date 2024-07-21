@@ -1,14 +1,14 @@
 "use client"
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import { Question } from "@/model/question";
+import { Quiz } from "@/model/quiz";
+import { quizService } from "@/services/quiz-service";
 import { Button } from "@/components/button";
 import { Container } from "@/components/container";
 import { QuizResponse } from "@/components/quizResponse";
 import { QuizResponseStyle } from "@/components/quizResponse/types";
-import { Question } from "@/model/question";
-import { Quiz } from "@/model/quiz";
-import { quizService } from "@/services/quiz-service";
-import Image from "next/image";
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
 
 interface SelectResponse {
   id: number;
@@ -40,12 +40,12 @@ export default function QuizPage() {
     const currentIndex = getCurrentQuestionIndex()
     
     selecteWrongAndCorrectResponse()
-    console.log({selectedResponses})
+
     if(currentIndex < questions.length - 1){
       setTimeout(() => {
         setCurrentQuestion(questions[currentIndex + 1])
         setSelectedResponses([])
-      }, 2000)
+      }, 1000)
     }
     
    }
@@ -57,20 +57,17 @@ export default function QuizPage() {
    }
 
   function addResponse(id: number) {
-    if(isResponseSelected(id)) return
     setSelectedResponses([...selectedResponses, { id, style: 'active' }])
   }
 
-
   function removeResponse(id: number) {
-    if(!isResponseSelected(id)) return
-    setSelectedResponses(selectedResponses.filter(response => response.id !== id))
+    setSelectedResponses(selectedResponses.filter(_ => _.id !== id))
   }
   
   const isResponseSelected = (id: number) => selectedResponses.some(response => response.id === id)
 
   function handleSelectResponse(id: number) {
-    !selectedResponses?.some(response => response.id === id) ? addResponse(id) : removeResponse(id) 
+    !isResponseSelected(id) ? addResponse(id) : removeResponse(id) 
   }
 
   function selecteWrongAndCorrectResponse() {
@@ -82,7 +79,6 @@ export default function QuizPage() {
       return {...response, style: 'wrong' }
     }) as SelectResponse[]
 
-    console.log({responses})
     setSelectedResponses([...responses])
   }
 
@@ -93,15 +89,11 @@ export default function QuizPage() {
     const responsesId = selectedResponses.map(_ => _.id).join(':')
     const responsesSort = sortResponses(responsesId) 
 
-    console.log({correctResponsesSort, responsesSort})
-
     return correctResponsesSort === responsesSort
   }
 
   const sortResponses = (responses: string) =>  responses.split(':').sort().join(':')
   
-  console.log("Fora> ", {selectedResponses})
-
   return (
     <Container>
       <main className="px-16 py-8">
@@ -125,7 +117,6 @@ export default function QuizPage() {
                     <QuizResponse 
                       key={i} 
                       text={_.text} 
-                      //isActive={selectedResponses?.includes(_.id.toString())}
                       onClick={() => handleSelectResponse(_.id)}
                       style={selectedResponses.find(r => r.id === _.id)?.style}
                     /> 

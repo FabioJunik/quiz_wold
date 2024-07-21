@@ -1,6 +1,6 @@
 import { QuizResponseProps } from "./types"
 
-export const QuizResponse = ({text, isActive=false, onClick, style='default'}: QuizResponseProps ) => {
+export const QuizResponse = ({text, onClick, style='default'}: QuizResponseProps ) => {
   const variantStyles = {
     default: "bg-gray-200 hover:bg-secondary-500 hover:p-5 cursor-pointer",
     active: "bg-secondary-500 hover:p-5 cursor-pointer",
