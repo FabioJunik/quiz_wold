@@ -3,6 +3,11 @@
 @tailwind utilities;
 
 
+h1 {
+  font-size: 46px;
+  font-weight: bold;
+}
+
 h2 {
   font-size: 30px;
   font-weight: bold;
