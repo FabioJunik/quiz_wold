@@ -3,6 +3,8 @@ import { Button } from "@/components/button";
 import { Container } from "@/components/container";
 import image from "../../../../public/images/itachi.jpg"
 import Image from "next/image";
+import { Stars } from "@/components/stars";
+import { Comment } from "@/components/comment";
 
 
 export default function QuizPage() {
@@ -10,7 +12,7 @@ export default function QuizPage() {
   return (
     <Container>
       <main className="grid grid-cols-[1fr_400px] w-full gap-8">
-        <div className="">
+        <div>
           <div>
             <div>
               <Image
@@ -22,9 +24,14 @@ export default function QuizPage() {
             <p className="my-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure fugit ab delectus aliquam sapiente rerum commodi ea! Atque, at doloribus! Possimus aperiam sequi temporibus, nemo nesciunt cum! Sequi, ipsa accusamus.</p>
             <Button className="w-full py-3">Fazer Quiz</Button>
           </div>
+          <div className="flex flex-col gap-3 mt-10">
+            <Comment/>
+            <Comment/>
+            <Comment/>
+          </div>
         </div>
         <div>
-          <div className="w-full p-4 shadow-md rounded-md flex justify-between">
+          <div className="w-full p-4 shadow-md rounded-md flex justify-between sticky top-2">
             <div className="flex flex-col">
               <div className="w-16 h-16 rounded-full border-2 border-primary-500">
                 <Image 
