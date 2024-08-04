@@ -5,7 +5,9 @@ export const Container = ({children}: ContainerProps) => {
   return (
     <div className="w-full min-h-screen flex flex-col">
       <Header/>
-      {children}
+      <div className="px-16 py-8">
+        {children}
+      </div>
     </div>
   )
 }

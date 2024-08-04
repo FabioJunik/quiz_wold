@@ -8,7 +8,7 @@ export function Button({children, style, className, onClick}: ButtonProps) {
 
   return (
     <button 
-      className={`text-sm px-5 py-3 rounded-lg font-semibold transition duration-300 ${variantsSyle[style ||'default']} ${className}`}
+      className={`text-sm px-5 py-2 rounded-lg font-semibold transition duration-300 ${variantsSyle[style ||'default']} ${className}`}
       onClick={onClick}
     >
       {children}

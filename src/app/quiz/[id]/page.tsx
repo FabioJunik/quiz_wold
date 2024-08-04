@@ -1,136 +1,52 @@
 "use client"
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import Image from "next/image";
-import { Question } from "@/model/question";
-import { Quiz } from "@/model/quiz";
-import { quizService } from "@/services/quiz-service";
 import { Button } from "@/components/button";
 import { Container } from "@/components/container";
-import { QuizResponse } from "@/components/quizResponse";
-import { QuizResponseStyle } from "@/components/quizResponse/types";
+import image from "../../../../public/images/itachi.jpg"
+import Image from "next/image";
 
-interface SelectResponse {
-  id: number;
-  style: QuizResponseStyle;
-}
+
 export default function QuizPage() {
-  const [quiz, setQuiz] = useState<Quiz>()
-  const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null)
-  const [selectedResponses, setSelectedResponses] = useState<SelectResponse[]>([])
-
-  const {id} = useParams()
-  const quizId = Number(id)
-
-  useEffect(() => {
-    quizService.getOne(quizId).then((result) => {
-      setQuiz(result)
-
-      if(result.questions)
-        setCurrentQuestion(result.questions[0])
-    });
-  }, [quizId])
-
-  if(!currentQuestion) return 
-
-  function handleNextQuestion() {
-    if(!quiz?.questions) return 
-    const { questions } = quiz
-
-    const currentIndex = getCurrentQuestionIndex()
-    
-    selecteWrongAndCorrectResponse()
-
-    if(currentIndex < questions.length - 1){
-      setTimeout(() => {
-        setCurrentQuestion(questions[currentIndex + 1])
-        setSelectedResponses([])
-      }, 1000)
-    }    
-   }
-
-   function getCurrentQuestionIndex(): number {
-    if(!currentQuestion || !quiz?.questions) return -1 
-
-    return quiz.questions.findIndex(({id}) => id === currentQuestion.id)
-   }
-
-  function addResponse(id: number) {
-    setSelectedResponses([...selectedResponses, { id, style: 'active' }])
-  }
-
-  function removeResponse(id: number) {
-    setSelectedResponses(selectedResponses.filter(_ => _.id !== id))
-  }
-  
-  const isResponseSelected = (id: number) => selectedResponses.some(response => response.id === id)
-
-  function handleSelectResponse(id: number) {
-    !isResponseSelected(id) ? addResponse(id) : removeResponse(id) 
-  }
-
-  function selecteWrongAndCorrectResponse() {
-    const responses = selectedResponses.map(response => {
-      if(currentQuestion?.correctResponses.includes(response.id.toString())) {
-        return {...response, style: 'correct' }
-      }
-
-      return {...response, style: 'wrong' }
-    }) as SelectResponse[]
-
-    setSelectedResponses([...responses])
-  }
-
-  function isResponseCorrect(): boolean {
-    if(!selectedResponses.length) return false
-
-    const correctResponsesSort = sortResponses(currentQuestion?.correctResponses || '')
-    const responsesId = selectedResponses.map(_ => _.id).join(':')
-    const responsesSort = sortResponses(responsesId) 
-
-    return correctResponsesSort === responsesSort
-  }
-
-  const sortResponses = (responses: string) =>  responses.split(':').sort().join(':')
   
   return (
     <Container>
-      <main className="px-16 py-8">
-        <div className="w-full bg-gray-200 rounded-full h-4 ">
-          <div className="bg-primary-500 h-full rounded-full" style={{width: "45%"}}></div>
-        </div>
+      <main className="grid grid-cols-[1fr_400px] w-full gap-8">
+        <div className="">
           <div>
-            <h2 className="">{currentQuestion.text}</h2>
-            <div className="w-full flex gap-2 items-center">
+            <div>
               <Image
-                className="w-[650px] h-[400px] flex-1 rounded-lg" 
-                src={currentQuestion.image} 
-                alt="im" 
-                width={100} 
-                height={100}
-                loader={() => currentQuestion.image}
+                className="w-full h-full object-cover rounded-lg"
+                src={image}
+                alt="image"
               />
-              <div className="w-full flex flex-col items-end gap-2">
-                <div className="w-full flex gap-2 flex-col">
-                  {currentQuestion.responses?.map((_, i) => (
-                    <QuizResponse 
-                      key={i} 
-                      text={_.text} 
-                      onClick={() => handleSelectResponse(_.id)}
-                      style={selectedResponses.find(r => r.id === _.id)?.style}
-                    /> 
-                  ))}
-                </div>
-                <div> 
-                  <Button 
-                    className="px-10 py-3" onClick={handleNextQuestion}
-                  >
-                    Seguinte
-                  </Button>
+            </div>
+            <p className="my-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure fugit ab delectus aliquam sapiente rerum commodi ea! Atque, at doloribus! Possimus aperiam sequi temporibus, nemo nesciunt cum! Sequi, ipsa accusamus.</p>
+            <Button className="w-full py-3">Fazer Quiz</Button>
+          </div>
+        </div>
+        <div>
+          <div className="w-full p-4 shadow-md rounded-md flex justify-between">
+            <div className="flex flex-col">
+              <div className="w-16 h-16 rounded-full border-2 border-primary-500">
+                <Image 
+                  className="w-full h-full object-cover rounded-full"
+                  src={image}
+                  alt="image"
+                />
+              </div>
+              <div>
+                <h4 className="font-semibold text-lg">Fábio Junik</h4>
+                <p className="text-sm">@fabiojunik</p>
+                <div className="mt-4 text-sm">
+                  <span className="mr-2"><b>512</b> seguidores</span>
+                  <span><b>16</b> questionários</span>
                 </div>
               </div>
             </div>
+            <div>
+              <Button style="bottomless" className="py-2">Seguir</Button>
+            </div>
           </div>
+        </div>
       </main>
     </Container>
   )
